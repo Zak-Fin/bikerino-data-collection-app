@@ -29,19 +29,19 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
-    private SensorManager sensorManager;
-    private Sensor accelerometerSensor;
-    private Sensor gyroscopeSensor;
-    private Sensor pressureSensor;
-    private TextView accelerometerValuesTextView;
-    private TextView gyroscopeValuesTextView;
-    private TextView pressureValuesTextView;
-    private String fileName;
-    private Boolean isCapturing = false;
-    private Button cycleButton;
-    private Button crashButton;
-    private int light_purple;
-    private int dark_purple;
+    protected SensorManager sensorManager;
+    protected Sensor accelerometerSensor;
+    protected Sensor gyroscopeSensor;
+    protected Sensor pressureSensor;
+    protected TextView accelerometerValuesTextView;
+    protected TextView gyroscopeValuesTextView;
+    protected TextView pressureValuesTextView;
+    protected String fileName;
+    protected Boolean isCapturing = false;
+    protected Button cycleButton;
+    protected Button crashButton;
+    protected int light_purple;
+    protected int dark_purple;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
