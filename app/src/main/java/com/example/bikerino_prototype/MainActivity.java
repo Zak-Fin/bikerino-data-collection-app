@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 String accelerometerDisplayValuesString = "\nX" + ax + "\nY" + ay + "\nZ" + az;
                 accelerometerValuesTextView.setText("Accelerometer Values: " + accelerometerDisplayValuesString);
                 // Save accelerometer data to file
-                saveSensorDataToFile("/accelerometer_"+fileName, accelerometerValuesString);
+                saveSensorDataToFile("/accelerometer_data_"+fileName, accelerometerValuesString);
             }
             // Handle gyroscope values
             if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
