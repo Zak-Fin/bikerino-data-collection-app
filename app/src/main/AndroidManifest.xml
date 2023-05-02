@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/bikerino_dev_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BikerinoPrototype">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.bikerino_prototype.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
