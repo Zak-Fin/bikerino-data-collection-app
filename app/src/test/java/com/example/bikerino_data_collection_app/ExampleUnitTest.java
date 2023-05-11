@@ -1,4 +1,4 @@
-package com.example.bikerino_prototype;
+package com.example.bikerino_data_collection_app;
 
 import org.junit.Test;
 

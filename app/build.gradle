@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.bikerino_prototype"
+        applicationId "com.example.bikerino_data_collection_app"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
@@ -26,7 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.example.bikerino_prototype'
+    namespace 'com.example.bikerino_data_collection'
 }
 
 dependencies {

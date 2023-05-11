@@ -1,4 +1,4 @@
-package com.example.bikerino_prototype;
+package com.example.bikerino_data_collection_app;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,11 +11,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.example.bikerino_data_collection.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

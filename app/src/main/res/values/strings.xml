@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bikerino-Prototype</string>
+    <string name="app_name">bikerino-data-collection-app</string>
     <string name="button_cycle_default">Record cycle</string>
     <string name="button_crash_default">Record crash</string>
     <string name="accelerometerValues_default">Accelerometer Values</string>
