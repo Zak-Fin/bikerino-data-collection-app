@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float ax = event.values[0]; // Acceleration along x-axis
                 float ay = event.values[1]; // Acceleration along y-axis
                 float az = event.values[2]; // Acceleration along z-axis
-                String accelerometerValuesString = "\nX" + ax + "Y" + ay + "Z" + az;
+                String accelerometerValuesString = "X" + ax + "Y" + ay + "Z" + az+"\n";
                 String accelerometerDisplayValuesString = "\nX" + ax + "\nY" + ay + "\nZ" + az;
                 accelerometerValuesTextView.setText("Accelerometer Values: " + accelerometerDisplayValuesString);
                 // Save accelerometer data to file
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float gx = event.values[0]; // Rotation rate around x-axis
                 float gy = event.values[1]; // Rotation rate around y-axis
                 float gz = event.values[2]; // Rotation rate around z-axis
-                String gyroscopeValuesString = "\nX" + gx + "Y" + gy + "Z" + gz;
+                String gyroscopeValuesString = "X" + gx + "Y" + gy + "Z" + gz+"\n";
                 String gyroscopeDisplayValuesString = "\nX" + gx + "\nY " + gy + "\nZ" + gz;
                 gyroscopeValuesTextView.setText("Gyroscope Values: " + gyroscopeDisplayValuesString);
                 // Save gyroscope data to file
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             // Handle pressure sensor value
             if (event.sensor.getType() == Sensor.TYPE_PRESSURE) {
                 float pressure = event.values[0]; // Atmospheric pressure
-                String pressureValueString = "\nP" + String.valueOf(pressure);
+                String pressureValueString = "P" + String.valueOf(pressure)+"\n";
                 String pressureDisplayValueString = "\n" + String.valueOf(pressure);
                 pressureValuesTextView.setText("Pressure Value: \n" + pressureDisplayValueString);
                 // Save pressure data to file
