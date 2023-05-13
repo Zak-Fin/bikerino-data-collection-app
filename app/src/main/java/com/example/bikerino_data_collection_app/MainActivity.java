@@ -1,8 +1,11 @@
 package com.example.bikerino_data_collection_app;
 
+import static android.util.Log.DEBUG;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
 import android.content.Context;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -11,6 +14,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +31,7 @@ import java.io.OutputStreamWriter;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
@@ -44,12 +50,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected Button crashButton;
     protected int light_purple;
     protected int dark_purple;
+    private static final int NOTIFICATION_ID = 1;
+    private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        // Create the notification object
+//        Notification notification = new Notification.Builder(this)
+//                .setContentTitle("My App")
+//                .setContentText("Running in foreground...")
+//                .setSmallIcon(R.drawable.bikerino_dev_foreground)
+//                .build();
+//
+//        // Start the foreground service with the notification object and ID
+//        startForeground(NOTIFICATION_ID, notification);
+
+        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "bikerino-data-collection-app::collecting-sensor-data");
         // Initialize SensorManager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -85,8 +105,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         light_purple = Color.rgb(187,134, 252);
         dark_purple = Color.rgb(120,86, 162);
+
+//        if (savedInstanceState != null) {
+//            // Restore button text if it was saved
+//            String cycleButtonText = savedInstanceState.getString("cycleButtonText");
+//            cycleButton.setText(cycleButtonText);
+//            String crashButtonText = savedInstanceState.getString("crashButtonText");
+//            crashButton.setText(crashButtonText);
+//        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        wakeLock.release();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -102,7 +135,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // Unregister the SensorEventListener to conserve resources
         sensorManager.unregisterListener(this);
     }
-
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//
+//        // Save button text
+//        outState.putString("cycleButtonText", cycleButton.getText().toString());
+//        outState.putString("crashButtonText", crashButton.getText().toString());
+//    }
     public void onCycleClick(View view){
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         fileName = "cycle_" + timestamp + ".txt";
@@ -110,10 +150,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(isCapturing) {
             cycleButton.setText("Recording cycle...");
             cycleButton.setBackgroundColor(dark_purple);
+            wakeLock.acquire();
         }
         else{
             cycleButton.setText("Record cycle");
             cycleButton.setBackgroundColor(light_purple);
+            wakeLock.release();
         }
     }
 
@@ -125,10 +167,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(isCapturing) {
             crashButton.setText("Recording crash...");
             crashButton.setBackgroundColor(dark_purple);
+            wakeLock.acquire();
         }
         else{
             crashButton.setText("Record crash");
             crashButton.setBackgroundColor(light_purple);
+            wakeLock.release();
         }
     }
 
@@ -174,6 +218,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(isCapturing) {
+
+            String thisFilename = fileName;
+            String fileTime = thisFilename.substring(thisFilename.lastIndexOf("_") + 1, thisFilename.lastIndexOf(".txt"));
+            LocalTime fileTimeObject = LocalTime.parse(fileTime, DateTimeFormatter.ofPattern("HHmmss"));
+            // Get the current time
+            LocalTime currentTime = LocalTime.now();
+            // Check if the file time is 5 seconds behind the current time
+            if (fileTimeObject.plusSeconds(5).isBefore(currentTime)) {
+                String timestamp = new SimpleDateFormat("HHmmss", Locale.getDefault()).format(new Date());
+                fileName = fileName.substring(0,thisFilename.lastIndexOf("_") + 1) + timestamp +".txt";
+                Log.println(DEBUG,"log","New file made");
+
+            }
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 // Handle accelerometer values here
                 float ax = event.values[0]; // Acceleration along x-axis
